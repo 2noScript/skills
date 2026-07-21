@@ -44,6 +44,10 @@ Nếu tổng số từ mục tiêu hoặc độ dài của kịch bản gốc v�
     * Mỗi title trong danh sách phải khai thác một góc độ/khoảnh khắc/nhân vật/mâu thuẫn khác nhau trong kịch bản (không lặp lại ý tưởng của nhau), để người dùng có nhiều lựa chọn thực sự khác biệt về hướng tiếp cận SEO/retention.
     * Title vẫn phải bám sát dữ kiện lịch sử có thật trong kịch bản, không bịa đặt để tạo giật gân sai sự thật (không clickbait sai lệch).
     * Độ dài mỗi title nên tối ưu cho YouTube (khoảng 50-70 ký tự, không quá dài để không bị cắt trên giao diện).
+  * **Quy tắc sinh Hashtag (Hashtag Rule):** Ngoài title/description/keyword, bạn **BẮT BUỘC** tạo thêm từ **8 đến 15 hashtag** tiếng Anh chuẩn SEO YouTube dựa trên toàn bộ nội dung kịch bản (chủ đề lịch sử, nhân vật, giai đoạn, sự kiện, thể loại video...).
+    * Mỗi hashtag bắt đầu bằng dấu `#`, viết liền không dấu cách (ví dụ: `#WorldWarII`, `#RomanEmpire`, `#HistoryDocumentary`).
+    * Kết hợp cả hashtag chủ đề rộng (ví dụ `#History`, `#Documentary`) lẫn hashtag cụ thể/ngách sát với nội dung kịch bản (tên nhân vật, trận đánh, mốc thời gian, địa danh...) để tối ưu khả năng tiếp cận đa dạng đối tượng xem.
+    * Không lặp lại hashtag, không dùng hashtag chung chung vô nghĩa không liên quan tới nội dung.
 
 ---
 
@@ -79,7 +83,7 @@ Chỉ chứa nội dung script, **không** chứa title/description/keyword.
 ```
 
 ### 3b. Schema JSON cho bước Metadata cuối cùng (Trạng thái 4, sau khi tất cả Part đã xong):
-Chỉ được sinh ra sau khi toàn bộ các Part kịch bản đã hoàn tất và người dùng xác nhận muốn tạo metadata. Trường `title` là một **mảng** gồm 5-8 phương án, mỗi phương án bắt đầu bằng một từ để hỏi (Why/How/What/Who/When/Where...).
+Chỉ được sinh ra sau khi toàn bộ các Part kịch bản đã hoàn tất và người dùng xác nhận muốn tạo metadata. Trường `titleOptions` là một **mảng** gồm 5-8 phương án, mỗi phương án bắt đầu bằng một từ để hỏi (Why/How/What/Who/When/Where...). Trường `hashtags` là một **mảng** gồm 8-15 hashtag.
 ```json
 {
   "pipelineStage": "METADATA_GENERATION",
@@ -92,6 +96,12 @@ Chỉ được sinh ra sau khi toàn bộ các Part kịch bản đã hoàn tấ
     "Who [phương án 5 - bắt đầu bằng từ để hỏi]"
   ],
   "description": "Mô tả video YouTube chuẩn SEO tiếng Anh, tóm tắt hấp dẫn dựa trên toàn bộ nội dung kịch bản đã remaster",
-  "keyword": "Danh sách từ khóa SEO tiếng Anh, cách nhau bằng dấu phẩy, dựa trên toàn bộ nội dung kịch bản đã remaster"
+  "keyword": "Danh sách từ khóa SEO tiếng Anh, cách nhau bằng dấu phẩy, dựa trên toàn bộ nội dung kịch bản đã remaster",
+  "hashtags": [
+    "#History",
+    "#Documentary",
+    "#WorldWarII",
+    "#..."
+  ]
 }
 ```
