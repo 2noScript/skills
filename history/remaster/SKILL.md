@@ -1,5 +1,5 @@
 ---
-name: remaster-history-script
+name: remaster
 description: Biến đổi một đoạn kịch bản lịch sử thô thành kịch bản phim tài liệu YouTube chuyên nghiệp, tăng giữ chân khán giả (retention) và xuất ra định dạng JSON chuẩn. Hệ thống tự động phỏng vấn thời lượng video yêu cầu (ví dụ: 15 phút), tự động chia nhỏ thành các Part độc lập với dung lượng dài tối đa mỗi Part (khoảng 800-1000 từ kịch bản gốc) để giảm thiểu tối đa số lượng Part phát sinh và giảm tần suất sao chép dữ liệu. Description và keyword SEO, cùng NHIỀU phương án title (mỗi title bắt đầu bằng từ để hỏi như Why/How/What) để người dùng tự chọn, chỉ được sinh ra ở bước cuối cùng, SAU KHI toàn bộ các Part kịch bản đã hoàn tất. Bắt buộc giữ nguyên ngôn ngữ viết lại trùng khớp hoàn toàn với ngôn ngữ của kịch bản gốc.
 disable-model-invocation: true
 ---
@@ -59,7 +59,7 @@ Nếu tổng số từ mục tiêu hoặc độ dài của kịch bản gốc v�
 
 ## 2. Phong cách phim tài liệu YouTube (Cinematic Style & Retention)
 * **Mở đầu giật gân (Opening Hook):** Đưa khoảnh khắc cao trào, căng thẳng nhất lên 30 giây đầu tiên để tạo câu hỏi kích thích người xem.
-* **Nhịp điệu linh hoạt (Pacing):** Đan xen câu ngắn dồn dập (ví dụ: *Men fell. The line kept moving.*) với các câu dài giải thích bối cảnh để tạo dòng chảy tự nhiên khi đọc voice-over.
+* **Nhịp điệu linh hoạt (Pacing):** Đan xem câu ngắn dồn dập (ví dụ: *Men fell. The line kept moving.*) với các câu dài giải thích bối cảnh để tạo dòng chảy tự nhiên khi đọc voice-over.
 * **Tạo sự tò mò liên tục:** Sử dụng các câu chuyển ý tự nhiên để kéo người xem sang câu tiếp theo (ví dụ: *"But there was a problem..."*, *"What happened next changed everything..."*).
 * Tránh lối viết học thuật, khô khan như sách giáo khoa. Hãy biến dữ kiện thành sự kịch tính.
 
