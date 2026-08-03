@@ -1,6 +1,6 @@
 ---
 name: asset
-description: Bóc tách kịch bản thô thành Bối cảnh lịch sử (historicalContext) và Thư viện Asset (Nhân vật, Sinh vật sống, Thực thể tập thể, Vật thể) dưới dạng JSON chuẩn. Tự động kiểm tra độ đầy đủ completenessCheckNote và đảm bảo đúng niên đại lịch sử trước khi xuất JSON.
+description: Bóc tách kịch bản thô thành Bối cảnh lịch sử (historicalContext) và Thư viện Asset (Nhân vật, Sinh vật sống, Thực thể tập thể, Vật thể) dưới dạng JSON chuẩn thuần.
 disable-model-invocation: true
 ---
 
@@ -10,60 +10,38 @@ Hệ thống này bóc tách tài nguyên trực quan (Asset) và xác định B
 
 ---
 
-## 0. QUY TẮC ĐIỀU HƯỚNG TẠI CÁC ĐIỂM DỪNG (Checkpoint Navigation)
+## 1. QUY TẮC PHẢN HỒI & TRIGGER
 
-Mỗi khi hệ thống dừng lại chờ xác nhận, dòng [HỆ THỐNG] luôn luôn phải kết thúc bằng một khối lệnh điều hướng dạng nút bấm, cú pháp cố định:
-
-- **[OK]** – Đồng ý, bắt đầu bóc tách Bối cảnh lịch sử và Asset Library.
-- **[QUAY LẠI]** – Chưa cần, tôi sẽ gửi lại kịch bản khác hoặc yêu cầu điều chỉnh.
-
-Quy tắc xử lý phản hồi: Bất kỳ cụm từ đồng ý nào (OK, ok, Đồng ý, Yes, Có, [OK]) đều hợp lệ để tiến hành.
+- **Xử lý Tự động**: Khi nhận được Kịch bản trong prompt, lập tức xác định bối cảnh lịch sử và xuất duy nhất 1 JSON Object đầy đủ `historicalContext`, `characters`, và `objects` ngay lượt phản hồi đầu tiên. Không in văn bản dẫn dắt thừa.
+- **Trigger tiếp tục**: Sử dụng duy nhất trigger `[OK]` nếu cần tiếp tục hoặc chỉnh sửa.
 
 ---
 
-## GIAI ĐOẠN 1 — XÁC NHẬN VÀ XUẤT ASSET LIBRARY
+## 2. QUY TẮC BÓC TÁCH ASSET LỊCH SỬ
 
-### 1.1 Bước chặn hỏi ý kiến (bắt buộc)
-Khi nhận SCRIPT lần đầu, không được xuất Asset ngay. In đúng khối sau rồi dừng lại chờ phản hồi:
-
-```
-[HỆ THỐNG]: Tôi đã nhận được kịch bản của bạn.
-
-[OK] – Đồng ý, bắt đầu xác định bối cảnh lịch sử và bóc tách danh sách Nhân vật (Characters, gồm cả tập thể/nhóm) và Đối tượng (Objects).
-[QUAY LẠI] – Chưa cần, tôi sẽ gửi lại kịch bản khác hoặc yêu cầu điều chỉnh trước.
-```
-
-### 1.2 Xác định Bối cảnh lịch sử (BẮT BUỘC)
-Trước khi liệt kê bất kỳ Asset nào, phải xác định và chốt một khối `historicalContext` gồm:
+### 2.1 Bối cảnh lịch sử (`historicalContext`)
+Phải xác định chốt một khối `historicalContext` gồm:
 - **period**: mốc thời gian cụ thể nhất (thế kỷ, thập niên, năm, mùa).
-- **location**: địa danh/địa hình thực tế (quốc gia, vùng, loại địa hình).
+- **location**: địa danh/địa hình thực tế.
 - **culturalFaction**: phe/quốc gia/nền văn hóa liên quan.
-- **keyVisualElements**: 3–6 đặc điểm thị giác đặc trưng của đúng thời kỳ/địa điểm đó.
+- **keyVisualElements**: 3–6 đặc điểm thị giác đặc trưng của thời kỳ/địa điểm đó.
 
-### 1.3 Quy tắc bóc tách Asset
-- **Tồn tại trực quan**: Trích xuất mọi thực thể có hình thái vật lý.
-- **Ranh giới Character vs Object — dựa trên "sinh vật sống"**: Bất kỳ sinh vật sống nào (người, ngựa chiến, chó săn, gia súc...) xếp vào `characters`. Vật vô tri xếp vào `objects`.
-- **Bao gồm nhân vật phụ, vật thể phụ và thực thể tập thể**: Đội quân, đám đông xếp thành 1 asset tập thể trong `characters` (VD: "Swedish Infantry Column").
-- **Tách theo trạng thái ngoại hình**: Nhân vật/vật thể bị thương hoặc thay đổi trạng thái rõ rệt tách thành asset riêng (VD: "King Charles XII Wounded").
-- **Mô tả (imagePrompt)**: Mô tả ngoại hình tĩnh, trang phục, giáp trụ từ đầu đến chân bám sát `historicalContext`. Cấm tuyệt đối mô tả hành động, cảm xúc, thời tiết hay góc máy.
-
-### 1.4 Tự kiểm tra độ đầy đủ Asset (Completeness Self-Check)
-Trước khi xuất JSON:
-1. Đọc lại toàn văn SCRIPT gốc, gạch chân mọi danh từ chỉ người, sinh vật, vật thể.
-2. Đối chiếu với danh sách `characters` / `objects`.
-3. Bổ sung ngay nếu phát hiện thực thể bị bỏ sót trước khi xuất JSON.
+### 2.2 Quy tắc Phân loại Asset
+- **Sinh vật sống (characters)**: Bất kỳ sinh vật sống nào (người, tướng lĩnh, binh sĩ tập thể, ngựa chiến, gia súc...) xếp vào `characters`.
+- **Vật vô tri (objects)**: Vũ khí, xe tăng, tàu chiến, công trình, quân phục, di tích xếp vào `objects`.
+- **Định dạng Tên Asset (Placeholder)**: Đặt tên Asset theo định dạng `[Tên_Asset_Nien_Dai]` (Ví dụ: `[Linh_My_1944]`, `[Swedish_Infantry_1709]`).
+- **Mô tả chi tiết (description)**: Mô tả ngoại hình tĩnh, trang phục, giáp trụ, chất liệu thô bám sát niên đại lịch sử. Cấm tuyệt đối mô tả hành động, cảm xúc, thời tiết hay góc máy.
 
 ---
 
 ## ĐỊNH DẠNG JSON ĐẦU RA BẮT BUỘC
 
-Trả về duy nhất đối tượng JSON hợp lệ:
+Chỉ trả về duy nhất 1 đối tượng JSON hợp lệ (không kèm bọc mã markdown, không lời dẫn thoại):
 
 ```json
 {
-  "pipelineStage": "ASSET_CONFIRMATION_REQUIRED",
   "historicalContext": {
-    "period": "Thế kỷ/thập niên/năm suy ra từ script",
+    "period": "Thế kỷ/thập niên/năm",
     "location": "Địa danh/địa hình thực tế",
     "culturalFaction": "Phe/quốc gia/nền văn hóa",
     "keyVisualElements": [
@@ -73,18 +51,15 @@ Trả về duy nhất đối tượng JSON hợp lệ:
   },
   "characters": [
     {
-      "name": "Tên nhân vật/tập thể",
-      "imagePrompt": "Mô tả chi tiết ngoại hình tĩnh từ đầu đến chân đúng niên đại lịch sử..."
+      "name": "[Tên_Nhan_Vat]",
+      "description": "Mô tả chi tiết ngoại hình tĩnh từ đầu đến chân đúng niên đại lịch sử..."
     }
   ],
   "objects": [
     {
-      "name": "Tên vật thể",
-      "imagePrompt": "Mô tả cấu trúc, chất liệu thô, bề mặt đúng niên đại lịch sử..."
+      "name": "[Ten_Vat_The]",
+      "description": "Mô tả cấu trúc, chất liệu thô, bề mặt đúng niên đại lịch sử..."
     }
-  ],
-  "characterNames": "Danh sách tên nhân vật cách nhau bằng dấu phẩy",
-  "objectNames": "Danh sách tên vật thể cách nhau bằng dấu phẩy",
-  "completenessCheckNote": "Xác nhận đã tự kiểm tra đầy đủ mọi thực thể trong kịch bản."
+  ]
 }
 ```
