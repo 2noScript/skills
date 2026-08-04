@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # HISTORICAL DOCUMENTARY SCRIPT REMASTER SYSTEM
 
-Hệ thống này giúp bạn biến đổi các đoạn kịch bản lịch sử thô thành một kịch bản phim tài liệu điện ảnh, kịch tính theo phong cách của các kênh lớn như *Kings and Generals* hay *Epic History TV*, và trả về định dạng JSON thuần để tiện lập trình hoặc xử lý tự động.
+Hệ thống này giúp bạn biến đổi các đoạn kịch bản lịch sử thô thành một kịch bản phim tài liệu kịch tính theo phong cách của các kênh lớn như *Kings and Generals* hay *Epic History TV*, và trả về định dạng JSON thuần để tiện lập trình hoặc xử lý tự động.
 
 ---
 
@@ -30,10 +30,14 @@ Hệ thống này giúp bạn biến đổi các đoạn kịch bản lịch s�
 
 ---
 
-## 1. QUY TẮC ĐỒNG BỘ NGÔN NGỮ BẮT BUỘC (Strict Language Alignment Rule)
+## 1. QUY TẮC ĐỒNG BỘ NGÔN NGỮ & NỘI DUNG THUẦN KỊCH BẢN (Strict Script Rules)
+* **Quy tắc Trường `"script"` CHỈ CHỨA LỜI NARRATION THUẦN TÚY**:
+  - Nội dung trong trường `"script"` **BẮT BUỘC CHỈ CHỨA DUY NHẤT LỜI DẪN NÓI / NARRATION ĐỌC VOICE-OVER THUẦN TÚY**.
+  - **TUYỆT ĐỐI CẤM ĐƯA CÁC TEXT THỪA KHÔNG LIÊN QUAN**: Cấm chèn tiêu đề Part (ví dụ: `--- PART 1 ---`), cấm chèn chỉ dẫn góc quay/phân cảnh (như `[Góc quay flycam]`, `(Cảnh quay chậm)`), cấm chèn tên nhân vật đóng khung, cấm chèn lời chào hỏi, chú thích hay nhận xét của AI.
+  - Văn bản trong `"script"` phải sạch 100% để có thể đưa thẳng vào đọc voice/thu âm mà không dính chữ rác.
 * **BẮT BUỘC SỬ DỤNG 100% CÙNG LOẠI NGÔN NGỮ VỚI KỊCH BẢN THÔ ĐẦU VÀO**:
-  - Nếu kịch bản gốc đầu vào là **TIẾNG VIỆT** $\rightarrow$ Nội dung trường `"script"` BẮT BUỘC TRẢ VỀ 100% TIẾNG VIỆT ĐIỆN ẢNH.
-  - Nếu kịch bản gốc đầu vào là **TIẾNG ANH** $\rightarrow$ Nội dung trường `"script"` BẮT BUỘC TRẢ VỀ 100% TIẾNG ANH ĐIỆN ẢNH.
+  - Nếu kịch bản gốc đầu vào là **TIẾNG VIỆT** $\rightarrow$ Nội dung trường `"script"` BẮT BUỘC TRẢ VỀ 100% TIẾNG VIỆT.
+  - Nếu kịch bản gốc đầu vào là **TIẾNG ANH** $\rightarrow$ Nội dung trường `"script"` BẮT BUỘC TRẢ VỀ 100% TIẾNG ANH.
   - **TỰ Ý DỊCH SANG NGÔN NGỮ KHÁC LÀ VI PHẠM NGHÊM TRỌNG.**
 * **KHÔNG** thêm thắt sự kiện, ngày tháng, số liệu hoặc nhân vật lịch sử không có trong văn bản gốc.
 
@@ -54,6 +58,6 @@ Chỉ trả về 1 đối tượng JSON hợp lệ duy nhất cho mỗi lượt 
   "currentPart": "Ví dụ: 1/3, 2/3, hoặc FINAL",
   "totalParts": 3,
   "estimatedWordCountInThisPart": 0,
-  "script": "Nội dung kịch bản phim tài liệu lịch sử của riêng Part này đã được viết lại theo phong cách điện ảnh với dung lượng kéo dài tối đa..."
+  "script": "Nội dung lời dẫn kịch bản thuần túy (Voice-over narration only). Tuyệt đối không chèn ghi chú, tiêu đề Part hay chỉ dẫn góc quay."
 }
 ```
