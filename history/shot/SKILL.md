@@ -1,55 +1,46 @@
 ---
 name: shot
-description: Phân rã kịch bản thô thành linh hồn các phân đoạn Shot & Nhịp ngắt Voice-over (8-14 từ/shot) dựa trên Ngữ cảnh Toàn bộ Kịch bản Remaster và Đoạn kịch bản mục tiêu của Batch, đảm bảo khôi phục nguyên văn 100% kịch bản gốc tuyệt đối không bỏ sót từ nào.
+description: Break down script content into precise Shot segments & Voice-over narration rhythms (8-14 words/shot) based on Global Remaster Context and Target Batch Chunks, guaranteeing 100% verbatim restoration without skipping any word.
 disable-model-invocation: true
 ---
 
 # HISTORICAL DOCUMENTARY SHOT BREAKDOWN SYSTEM (CONTEXT-AWARE BATCHING)
 
-Đây là **LINH HỒN CỦA NỘI DUNG PRODUCER**. Hệ thống này nhận **Toàn bộ Kịch bản Remaster** (làm ngữ cảnh toàn cục) và **Đoạn kịch bản mục tiêu của Batch** để phân rã thành các phân đoạn Shot ngắn chuẩn nhịp thoại voice-over (`line`) bảo toàn $100\%$ kịch bản gốc mà không bỏ sót bất kỳ từ nào.
+This system serves as the **CORE PRODUCER CONTENT ENGINE**. It receives **Global Remaster Script Context** and the **Target Batch Script Chunk** to split text into concise Shot segments matched to voice-over narration rhythm (`line`), preserving 100% verbatim text accuracy without skipping any words.
 
 ---
 
-## 1. NGUYÊN TẮC BẢO TOÀN NGUYÊN VĂN 100% (Verbatim Conservation Rule)
+## 1. 100% VERBATIM CONSERVATION RULE
 
-- **CẤM TÓM TẮT - CẤM BỎ SÓT - CẤM ĐỔI TỪ**: Trường `line` cho từng shot là nguyên văn kịch bản gốc. Khi gộp toàn bộ các câu `line` từ tất cả các Batch, nội dung phải khớp **ĐÚNG 100% TỪNG CHỮ** với kịch bản thô ban đầu.
-- **Xử lý 100% Đoạn Kịch bản Mục tiêu**: AI dựa vào Ngữ cảnh Toàn bộ Kịch bản để nắm rõ mạch chuyện, nhưng BẮT BUỘC phân rã ĐỦ 100% câu chữ của Đoạn Kịch bản Mục tiêu được chỉ định trong Batch.
-
----
-
-## 2. QUY TẮC ĐỒNG BỘ NGÔN NGỮ BẮT BUỘC (Strict Language Alignment Rule)
-
-- **CÙNG LOẠI NGÔN NGỮ VỚI KỊCH BẢN ĐẦU VÀO**:
-  - Nếu kịch bản đầu vào là **TIẾNG VIỆT** $\rightarrow$ Trường `line` 100% là **TIẾNG VIỆT**.
-  - Nếu kịch bản đầu vào là **TIẾNG ANH** $\rightarrow$ Trường `line` 100% là **TIẾNG ANH**.
-  - **TỰ Ý DỊCH SANG NGÔN NGỮ KHÁC LÀ VI PHẠM NGHIÊM TRỌNG.**
+- **NO SUMMARIZATION - NO OMISSION - NO WORD ALTERATION**: The `line` field for every shot MUST be verbatim original script text. When combining all `line` sentences across batches, the text MUST match the original script **100% WORD-FOR-WORD**.
+- **Process 100% Target Batch Chunk**: AI uses Global Remaster Script Context to understand story flow, but MUST break down 100% of the words in the specified Target Batch Chunk.
 
 ---
 
-## 3. CHUẨN NHỊP ĐỌC VOICE-OVER & TÁCH SHOT (Pacing & Rhythm)
+## 2. VOICE-OVER PACING & SHOT SEGMENTATION STANDARDS
 
-- **Độ dài lý tưởng mỗi Shot**: Từ **8 đến 14 từ** (tương đương 3–5 giây voice-over/shot).
-- **Ngắt theo cụm ý nghĩa (Semantic Clause Chunking)**:
-  - Ngắt tại dấu phẩy, dấu chấm, dấu chấm phẩy hoặc ranh giới mệnh đề ngữ pháp tự nhiên.
-  - Cấm ngắt giữa chừng cụm từ cố định (Ví dụ: Không ngắt giữa "Đại đế" và "Napoléon", không ngắt giữa "Chiến dịch" và "Normandy").
-- **Escape ngoặc kép**: Mọi dấu ngoặc kép trong `line` đổi thành `\"` hoặc `''` để đảm bảo chuỗi JSON không bị vỡ.
+- **Ideal Shot Length**: **8 to 14 words** per shot (equivalent to 3–5 seconds of voice-over narration per shot).
+- **Semantic Clause Chunking**:
+  - Break at commas, periods, semicolons, or natural grammatical clause boundaries.
+  - NEVER split proper nouns or fixed phrases mid-way (e.g., Do NOT split between "Napoleon" and "Bonaparte", or "Battle" and "of Normandy").
+- **Quote Escaping**: Escape double quotes inside `line` strings with `\"` or replace with single quotes `''` to prevent JSON parsing failures.
 
 ---
 
-## ĐỊNH DẠNG JSON ĐẦU RA BẮT BUỘC
+## MANDATORY OUTPUT JSON FORMAT
 
-Chỉ trả về 1 đối tượng JSON hợp lệ duy nhất cho mỗi Batch:
+Output strictly a single valid JSON object per batch:
 
 ```json
 {
   "shots": [
     {
       "shot": 1,
-      "line": "Trích nguyên văn kịch bản gốc cho shot 1 bằng đúng ngôn ngữ đầu vào (8-14 từ)..."
+      "line": "Verbatim excerpt from original script for shot 1 (8-14 words)..."
     },
     {
       "shot": 2,
-      "line": "Trích nguyên văn kịch bản gốc cho shot 2..."
+      "line": "Verbatim excerpt from original script for shot 2..."
     }
   ]
 }

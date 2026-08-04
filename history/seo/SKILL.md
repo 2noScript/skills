@@ -1,59 +1,50 @@
 ---
 name: seo
-description: Sinh SEO Metadata chuẩn YouTube (5-8 tiêu đề bắt đầu bằng từ để hỏi Why/How/What/Who/Tại sao/Làm thế nào..., Mô tả video, Từ khóa SEO, 8-15 Hashtags) dựa trên nội dung kịch bản hoàn chỉnh. Trả về định dạng JSON thuần.
+description: Generate YouTube-ready SEO Metadata (5-8 question hook titles starting with Why/How/What/Who/When..., Video description, SEO keywords, 8-15 Hashtags) based on completed script content in pure JSON format.
 disable-model-invocation: true
 ---
 
 # YOUTUBE SEO METADATA GENERATION SYSTEM
 
-Hệ thống này tổng hợp và tạo bộ SEO Metadata tối ưu tuyệt đối cho video YouTube dựa trên toàn bộ nội dung kịch bản phim tài liệu/câu chuyện đã hoàn chỉnh.
+This system synthesizes and generates an optimized YouTube SEO Metadata package based on complete documentary/story scripts.
 
 ---
 
-## 1. QUY TẮC ĐỒNG BỘ NGÔN NGỮ BẮT BUỘC (Strict Language Alignment Rule)
+## 1. METADATA GENERATION STANDARDS
 
-- **CÙNG LOẠI NGÔN NGỮ VỚI KỊCH BẢN ĐẦU VÀO**: Bộ SEO Metadata (`titleOptions`, `description`, `keyword`) BẮT BUỘC trả về bằng **CHÍNH XÁC 100% CÙNG LOẠI NGÔN NGỮ** với kịch bản đầu vào.
-  - Nếu kịch bản đầu vào là **TIẾNG VIỆT** $\rightarrow$ Các tiêu đề (`Tại sao...?`, `Làm thế nào...?`), Mô tả video và Từ khóa SEO BẮT BUỘC 100% là **TIẾNG VIỆT**.
-  - Nếu kịch bản đầu vào là **TIẾNG ANH** $\rightarrow$ Tiêu đề (`Why...?`, `How...?`), Mô tả video và Từ khóa SEO BẮT BUỘC 100% là **TIẾNG ANH**.
-  - **TỰ Ý DỊCH SANG NGÔN NGỮ KHÁC LÀ VI PHẠM NGHIÊM TRỌNG.**
+### 1.1 Curiosity Question Titles (Multi-Title Question Hooks)
+MANDATORY generation of **5 to 8 different title options** for user selection:
+* Each title **MUST start with a Question Word** (e.g., `Why`, `How`, `What`, `Who`, `When`, `Tại sao`, `Làm thế nào`, `Ai`...).
+* Each title explores a different angle, key character, or central conflict from the script.
+* Strictly adhere to factual events in the script without clickbait lies.
+* Optimal length for YouTube titles (50–70 characters).
 
----
+### 1.2 Video Description
+* Write a compelling summary capturing context and story climax from the script.
 
-## 2. QUY TẮC SINH METADATA
+### 1.3 SEO Keywords
+* Comma-separated list of SEO keywords.
 
-### 2.1 Phương án Tiêu đề tò mò (Multi-Title Question Hooks)
-BẮT BUỘC tạo ra **từ 5 đến 8 phương án title** khác nhau để người dùng lựa chọn:
-* Mỗi title **BẮT BUỘC phải bắt đầu bằng một từ để hỏi** (Question Word) tương ứng với ngôn ngữ của kịch bản (Tiếng Việt: `Tại sao`, `Làm thế nào`, `Cái gì`, `Ai`, `Khi nào`; Tiếng Anh: `Why`, `How`, `What`, `Who`, `When`).
-* Mỗi title khai thác một góc độ/nhân vật/mâu thuẫn khác nhau trong kịch bản.
-* Bám sát dữ kiện có thật trong kịch bản, không bịa đặt sai sự thật.
-* Độ dài mỗi title tối ưu cho YouTube (50-70 ký tự).
-
-### 2.2 Mô tả Video (Description)
-* Viết tóm tắt lôi cuốn ngữ cảnh và cao trào của kịch bản bằng đúng ngôn ngữ đầu vào.
-
-### 2.3 Từ khóa SEO (Keywords)
-* Danh sách từ khóa SEO bằng đúng ngôn ngữ đầu vào, phân cách bằng dấu phẩy.
-
-### 2.4 Hashtags (Hashtags)
-* Tạo từ **8 đến 15 hashtag** (bắt đầu bằng `#`, viết liền không dấu cách).
+### 1.4 Hashtags
+* Generate **8 to 15 hashtags** (starting with `#`, single words without spaces).
 
 ---
 
-## ĐỊNH DẠNG JSON ĐẦU RA BẮT BUỘC
+## MANDATORY OUTPUT JSON FORMAT
 
-Trả về duy nhất 1 đối tượng JSON hợp lệ (không kèm ký tự bọc mã markdown, không lời mở đầu/kết thúc):
+Return strictly a single valid JSON object:
 
 ```json
 {
   "titleOptions": [
-    "Tại sao / Why ...?",
-    "Làm thế nào / How ...?",
-    "Cái gì / What ...?",
-    "Ai / Who ...?",
-    "Khi nào / When ...?"
+    "Why ...?",
+    "How ...?",
+    "What ...?",
+    "Who ...?",
+    "When ...?"
   ],
-  "description": "Mô tả video YouTube chuẩn SEO bằng đúng ngôn ngữ đầu vào...",
-  "keyword": "từ khóa 1, từ khóa 2, từ khóa 3...",
+  "description": "YouTube SEO video description...",
+  "keyword": "keyword 1, keyword 2, keyword 3...",
   "hashtags": [
     "#History",
     "#Documentary",
