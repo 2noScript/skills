@@ -36,7 +36,7 @@ Return strictly a single valid JSON object:
 
 ```json
 {
-  "titleOptions": [
+  "titles": [
     "Why ...?",
     "How ...?",
     "What ...?",
