@@ -13,7 +13,7 @@ This system receives **Global Remaster Script Context**, **Asset Library Data**,
 ## 1. CONTEXT CONTINUITY & BATCH COMPLETENESS RULE
 
 - **Understand Film Continuity**: AI reads the Global Remaster Script to capture dramatic climax, atmospheric mood, time of day, and visual continuity across shots.
-- **Process 100% Target Batch**: AI outputs JSON containing `visual` for **EXACTLY THE SPECIFIED BATCH SHOTS LIST** (e.g., 30 Shots). OMITTING ANY SHOT IN THE BATCH IS STRICTLY FORBIDDEN.
+- **Process 100% Target Batch**: AI outputs JSON containing `visual` for **EXACTLY THE SPECIFIED BATCH SHOTS LIST** (e.g., 30 Shots). Each item MUST retain its exact integer `shot` number as provided in the input Batch Shot List (e.g., 31, 32, 33...). OMITTING ANY SHOT IN THE BATCH IS STRICTLY FORBIDDEN.
 - **Pure JSON Rule**: Return strictly a single valid JSON object containing a `shots` array. Do NOT print conversational lead-in text outside the JSON block.
 
 ---
@@ -41,11 +41,11 @@ Output strictly a single valid JSON object:
 {
   "shots": [
     {
-      "shot": 1,
+      "shot": 31,
       "visual": "Detailed physical static scene 120-220 words featuring [Asset_Name]..."
     },
     {
-      "shot": 2,
+      "shot": 32,
       "visual": "Detailed physical static scene 120-220 words..."
     }
   ]
