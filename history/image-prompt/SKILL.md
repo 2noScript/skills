@@ -20,8 +20,10 @@ This system receives **Global Remaster Script Context**, **Asset Library Data**,
 
 ## 2. VISUAL PROMPT DEVELOPMENT STANDARDS
 
-### 2.1 Asset Safety & Placeholders
-- **Exact `[Asset_Name]` Anchoring**: Copy the exact character name string from the provided Asset Library. Creating unauthorized variant names is forbidden.
+### 2.1 Asset Safety & Strict Boundary Rules
+- **Strict Asset Boundary**: AI MUST ONLY reference characters, figures, and key objects/settings that are explicitly listed in the provided Asset Library. Inventing new named characters, unlisted key figures, or extra unauthorized assets outside the Asset Library is STRICTLY FORBIDDEN.
+- **Exact `[Asset_Name]` Anchoring**: Whenever any character or object from the Asset Library is mentioned, copy their exact name string wrapped in square brackets, e.g. `[Asset_Name]`. Creating unauthorized variant names or un-bracketed character names is forbidden.
+- **Generic Scene Descriptions**: For background elements or unlisted environment details, describe them using general physical attributes without inventing new named entities.
 - **Prevent Historical Drift**: All clothing, armor, weaponry, and terrain details in `visual` must remain strictly consistent with Asset descriptions.
 
 ### 2.2 Description Quality Standards for Visual Prompt
