@@ -14,7 +14,7 @@ This system extracts all visual assets from historical documentary scripts into 
 
 ### 1.1 Asset Classification
 - **Living Entities (`characters`)**: Individuals, commanders, troop formations, military corps, war horses, livestock...
-- **Inanimate Objects (`objects`)**: Weapons, tanks, warships, uniforms, fortifications, relics, flags...
+- **Inanimate Objects / Props (`props`)**: Weapons, tanks, warships, uniforms, fortifications, relics, flags...
 - **Asset Naming Convention (`name`)**: Name assets cleanly without square brackets (e.g., `Swedish_Soldier_1709`, `US_GIs_1944`, `Bach_Dang_Warship_1288`). When embedded in `visual` by the Visual Prompt Skill, the bracketed format `[Asset_Name]` will be applied.
 
 ### 1.2 Standard for Integrating Historical Context into `visual`
@@ -40,7 +40,7 @@ Output strictly a single valid JSON object:
       "visual": "Swedish infantry soldier era 1709 (Battle of Poltava). Wearing a black felt tricorn hat, sky blue wool coat with signature Swedish yellow leather facings, brown leather belt with tarnished brass buckle ammunition pouch, black high-top leather riding boots. Holding a 1700s Flintlock musket with iron lock wrapped in oak wood stock."
     }
   ],
-  "objects": [
+  "props": [
     {
       "name": "Flintlock_Musket_1709",
       "visual": "Flintlock musket era 1709. Crude hand-forged iron lock mechanism with subtle metallic scratches, dark oak wood stock with visible grain, weathered brown cowhide shoulder sling with tarnished brass rivets."
