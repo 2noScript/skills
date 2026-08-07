@@ -10,11 +10,15 @@ This system serves as the **FOUNDATION ASSET ENGINE**. It scans historical docum
 
 ---
 
-## 1. 100% EXHAUSTIVE EXTRACTION RULE (ZERO-DROP POLICY)
+## 1. 100% EXHAUSTIVE EXTRACTION & REPRODUCIBILITY RULES
 
-- **EXHAUSTIVE SCRIPT SCANNING**: You MUST scan the ENTIRE script from start to finish. DO NOT skip any character, historical figure, soldier, military formation, vehicle, weapon, flag, document, or key setting prop mentioned or implied in the narrative.
-- **IMPLICIT ENTITY EXTRACTION**: If the script mentions "the Roman legions advanced across the mud", you MUST extract both `Roman_Legionary_Soldier` (character unit) and `Roman_Gladius_Sword` or `Roman_Scutum_Shield` (props) if visually significant.
-- **ALIAS RESOLUTION & DEDUPLICATION**: Consolidate different names referring to the same entity into a single canonical asset name (e.g., "General Zhukov", "Commander Zhukov", "Zhukov" -> `General_Georgy_Zhukov_1945`). Do NOT create duplicate assets for the same person/object.
+- **2-PASS ZERO-DROP SCANNING**:
+  - **Pass 1 (Explicit Scanning)**: Read the script from start to finish line-by-line. Extract EVERY named person, secondary figure, soldier group, weapon, vehicle, banner, document, or structure mentioned in narrative text. OMITTING ANY ENTITY IS STRICTLY FORBIDDEN.
+  - **Pass 2 (Implicit & Gear Extraction)**: For every character or group extracted in Pass 1, extract their signature era weaponry or equipped items into `props` if visually significant (e.g. `Swedish_Soldier_1709` -> `Flintlock_Musket_1709`).
+- **DETERMINISTIC CHRONOLOGICAL ORDERING**:
+  - Order all extracted items in both `characters` and `props` arrays strictly by the **chronological order of their first appearance in the script**. This guarantees 100% identical, reproducible output across multiple executions on the same input script.
+- **ALIAS RESOLUTION & DEDUPLICATION**:
+  - Consolidate different names referring to the same entity into a single canonical asset name (e.g., "General Zhukov", "Commander Zhukov", "Zhukov" -> `General_Georgy_Zhukov_1945`). Do NOT create duplicate entries for the same entity.
 
 ---
 
@@ -32,21 +36,22 @@ This system serves as the **FOUNDATION ASSET ENGINE**. It scans historical docum
    - **Artifacts, Banners & Documents**: Maps, royal seals, letters, regimental flags, relics (e.g., `Swedish_Regimental_Banner_1709`, `Sealed_Royal_Decree_1709`).
    - **Key Visual Structures & Forts**: Specific redoubts, trench walls, fortress gates (e.g., `Poltava_Earthwork_Redoubt_1709`).
 
-### 2.2 Naming Convention (`name`)
-- Use clean Snake_Case with Era/Year suffix: `[Name]_[Role/Faction]_[Year]` (e.g., `Swedish_Soldier_1709`, `M1_Garand_Rifle_1944`).
-- Do NOT include square brackets inside `name` in JSON output. (Square brackets `[Asset_Name]` will be applied downstream by the Visual Prompt Skill).
+### 2.2 Deterministic Naming Formula (`name`)
+- **DETERMINISTIC FORMULA**: Construct asset names strictly using the formula `[EntityName]_[RoleOrCategory]_[Year]` (e.g. `Swedish_Infantry_Soldier_1709`, `Flintlock_Musket_1709`, `M1_Garand_Rifle_1944`).
+- **PASCAL_SNAKE_CASE ONLY**: Capitalize each word and separate with underscores (`_`). Never use spaces, hyphens, or special characters.
+- **NO BRACKETS IN `name`**: Do NOT include square brackets inside the `name` field in the JSON output. (Square brackets `[Asset_Name]` will be applied downstream during Visual Prompt generation).
 
 ---
 
 ## 3. HISTORICAL CONTEXT & `visual` PROMPT STANDARDS
 
-Every asset `visual` MUST be written in **English (50–90 words)**, focusing exclusively on static physical attributes covering 5 mandatory historical layers:
+Every asset `visual` MUST be written as a highly detailed, comprehensive physical static description in **English (120–220 words)**, focusing exclusively on static physical attributes covering 5 mandatory historical layers:
 
 1. **Era & Faction Timestamp**: Year, century, conflict, and nation/faction (e.g., *1709 Battle of Poltava, Swedish Army*).
-2. **Headwear, Hair & Facial Attributes**: Helmet style, tricorn, topknot, beard, facial scars, eye color/expression.
-3. **Uniforms & Clothing**: Specific coat color, lapels, buttons, belts, trousers, boots, weave, embroidery.
-4. **Weapons & Equipped Items**: Material of stock, iron lock, blade steel, leather scabbard, brass fittings.
-5. **Raw Material Textures & Wear**: Coarse wool, tarnished brass, weathered cowhide leather, mud/powder stains, hand-forged iron with light metallic scratches.
+2. **Headwear, Hair & Facial Attributes**: Helmet style, tricorn, topknot, hair color/style, beard/mustache, facial scars, eye expression, weathered skin texture.
+3. **Uniforms & Clothing**: Specific coat color, collar, lapels, lining, brass/tarnished buttons, belts, trousers, footwear, stitching, weave, insignia, embroidery.
+4. **Weapons & Equipped Items**: Specific era-accurate weaponry, material of stock, iron lock mechanism, blade steel, leather scabbard, ammunition pouch, brass fittings.
+5. **Raw Material Textures & Wear**: Coarse hand-woven wool, tarnished brass, weathered cowhide leather, mud/powder stains, hand-forged iron armor with light metallic scratches, fabric fraying.
 
 ### STRICTLY FORBIDDEN IN `visual`:
 - Do NOT include dynamic actions (e.g., "running", "firing", "screaming").
@@ -60,7 +65,7 @@ Every asset `visual` MUST be written in **English (50–90 words)**, focusing ex
 Before outputting JSON, verify:
 - [ ] Has EVERY character, soldier group, weapon, vehicle, banner, and key object in the script been extracted?
 - [ ] Are aliases deduplicated into a single clear name?
-- [ ] Is every `visual` written in English with all 5 historical layers included?
+- [ ] Is every `visual` string written in detailed English between **120 and 220 words** with all 5 historical layers included?
 - [ ] Are all dynamic actions, camera angles, and render buzzwords completely removed?
 
 ---
@@ -74,13 +79,13 @@ Output strictly a single valid JSON object containing `characters` and `props` a
   "characters": [
     {
       "name": "Swedish_Soldier_1709",
-      "visual": "Swedish infantry soldier era 1709 (Battle of Poltava, Swedish Forces). Wearing a dark blue felt tricorn hat with white trim, sky blue coarse wool coat with signature yellow leather facings and brass buttons, cross-body brown leather belt with ammunition pouch, dark trousers tucked into black leather riding boots. Clean-shaved face with weathered skin. Holding a 1700s Flintlock musket with hand-forged iron lock and oak wood stock."
+      "visual": "Swedish infantry soldier era 1709 during the Great Northern War at the Battle of Poltava, Swedish Forces. Wearing a dark blue felt tricorn hat with white wool trim and a small pewter cockade button, sky blue coarse hand-woven wool coat with signature Swedish yellow leather facings, broad lapels, and tarnished brass buttons. Cross-body brown cowhide leather belt with an iron-buckled ammunition pouch, dark blue trousers tucked into knee-high black leather riding boots with scuffed heels. Clean-shaved stern face with sun-weathered skin, faint gunpowder smudges near cheekbones, and light blue eyes. Holding a 1700s Flintlock musket with a hand-forged iron lock mechanism, metallic scratches on the barrel, and a dark polished oak wood stock."
     }
   ],
   "props": [
     {
       "name": "Flintlock_Musket_1709",
-      "visual": "Flintlock musket era 1709. Crude hand-forged iron lock mechanism with subtle metallic scratches, dark oak wood stock with visible grain, weathered brown cowhide shoulder sling with tarnished brass rivets and iron buckles."
+      "visual": "Flintlock musket era 1709 of the Swedish Royal Infantry. Featuring a crude hand-forged iron lock mechanism with subtle metallic scratches and light oxidation along the hammer assembly, a 44-inch dark oak wood stock with visible grain lines and a smooth hand-rubbed oil finish. Equipped with a weathered brown cowhide shoulder sling secured by tarnished brass rivets and iron buckles. The iron barrel exhibits authentic hand-hammered texture, light gunpowder residue near the flash pan, and a small brass front sight blade near the muzzle tip."
     }
   ]
 }
