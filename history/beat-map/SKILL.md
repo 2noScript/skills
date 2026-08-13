@@ -54,8 +54,8 @@ DOCUMENTARY ARCHITECTURE RULES:
 5. **Shot Duration**: Every Shot duration `dur` MUST be >= 5 seconds (e.g. 5s, 6s, 7s).
 
 STRICT BEAT & SHOT JSON STRUCTURE:
-- Every Beat in "beats" MUST contain: "title_cn", "title_en", "bg", "feel", "narration", "shots" (Array of Shots).
-- Each Shot inside "shots" MUST contain: "dur" (number >= 5), "title" (boolean), "camera_move", "scene", "motion" (6s cinematic animation prompt), "keyframe_prompt" (120-220 words with [Asset_Name]).
+- Every Beat in "beats" MUST contain: "title", "bg", "feel", "narration", "shots" (Array of Shots).
+- Each Shot inside "shots" MUST contain: "dur" (number >= 5), "is_title" (boolean), "camera_move", "scene", "motion" (6s cinematic animation prompt), "keyframe_prompt" (120-220 words with [Asset_Name]).
 
 YOU MUST RESPOND ONLY WITH VALID JSON MATCHING THIS EXACT FORMAT:
 {
@@ -63,15 +63,14 @@ YOU MUST RESPOND ONLY WITH VALID JSON MATCHING THIS EXACT FORMAT:
   "currentPart": "1/2",
   "beats": [
     {
-      "title_cn": "CHIẾN DỊCH POLTAVA",
-      "title_en": "THE POLTAVA CAMPAIGN",
+      "title": "CHIẾN DỊCH POLTAVA",
       "bg": "aged parchment paper",
       "feel": "dramatic, heroic",
       "narration": "Năm 1709, đại quân Thụy Điển bắt đầu tiến vào chiến trường Poltava...",
       "shots": [
         {
           "dur": 6,
-          "title": true,
+          "is_title": true,
           "camera_move": "push_in",
           "scene": "Swedish infantry line advancing across freezing snow...",
           "motion": "6-second cinematic historical animation. Slow forward push camera motion across a freezing winter battlefield. Light snow drifts horizontally across the frame, [Swedish_Soldier_1709] breathing cold vapor air, realistic fabric movement on blue coat.",
@@ -102,8 +101,7 @@ YOU MUST RESPOND ONLY WITH VALID JSON MATCHING THIS EXACT FORMAT:
 | Field Name | Type | Purpose / Detailed Description | Example |
 |---|---|---|---|
 | `narration` | `string` | Lời đọc thuyết minh Voiceover nguyên văn 100% cho Beat (chứa 1 câu hoàn chỉnh) | `"Năm 1709, đại quân Thụy Điển bắt đầu tiến vào..."` |
-| `title_cn` | `string` | Tiêu đề phân cảnh bằng tiếng Việt / tiếng Hoa | `"CHIẾN DỊCH POLTAVA"` |
-| `title_en` | `string` | Banner chữ in hoa tiếng Anh nổi bật trên khung hình | `"THE POLTAVA CAMPAIGN"` |
+| `title` | `string` | Tiêu đề phân cảnh bằng tiếng Việt | `"CHIẾN DỊCH POLTAVA"` |
 | `bg` | `string` | Tone màu nền giấy/phim tài liệu (`aged parchment paper`, `deep indigo night`, `sepia canvas`) | `"aged parchment paper"` |
 | `feel` | `string` | Sắc thái cảm xúc (`dramatic, heroic`, `gloomy, cold`, `urgent, intense`) | `"dramatic, heroic"` |
 | `shots` | `array` | Mảng chứa danh sách các Khung hình visual (Shot) | `[...]` |
@@ -115,7 +113,7 @@ YOU MUST RESPOND ONLY WITH VALID JSON MATCHING THIS EXACT FORMAT:
 | Field Name | Type | Purpose / Detailed Description | Example |
 |---|---|---|---|
 | `dur` | `number` | Thời lượng hiển thị của Shot tính theo giây (Bắt buộc >= 5 giây) | `6` |
-| `title` | `boolean` | Flag hiển thị banner tiêu đề: `true` cho Shot A wide, `false` cho các Shot detail | `true` / `false` |
+| `is_title` | `boolean` | Flag hiển thị banner tiêu đề: `true` cho Shot A wide, `false` cho các Shot detail | `true` / `false` |
 | `camera_move` | `string` | Loại chuyển động camera (`push_in`, `pull_out`, `pan`, `tilt`, `parallax`, `static`) | `"push_in"` |
 | `scene` | `string` | Mô tả ngắn gọn bối cảnh của Shot | `"Swedish infantry line advancing across freezing snow..."` |
 | `motion` | `string` | Prompt chuyển động video 6s kèm góc máy camera và hiệu ứng hạt bụi/khói/tuyết | `"6-second cinematic historical animation. Slow forward push..."` |
