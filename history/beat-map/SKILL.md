@@ -13,7 +13,7 @@ This skill defines the complete screenwriting architecture, closed-world asset l
 
 ### 📖 1. Verbatim Beat Narration Rule (100% Word Conservation)
 - **NO SUMMARIZATION - NO OMISSION - NO WORD ALTERATION**: The `narration` field for every beat MUST be verbatim original script text. When combining all `narration` sentences across beats and batches, the text MUST match the original script **100% WORD-FOR-WORD**.
-- **Ideal Beat Length**: **15 to 25 words** per beat (equivalent to 5–8 seconds of voice-over narration per beat).
+- **Beat Narration Duration**: **25 to 50 words** per beat (equivalent to **10 to 20 seconds** of voice-over narration per beat).
 - **Semantic Clause Chunking**: Break at natural sentence boundaries (commas, periods, semicolons). NEVER split proper nouns or fixed phrases mid-way (e.g. Do NOT split between "Napoleon" and "Bonaparte").
 
 ### 🔒 2. Closed-World Asset Lockdown (`[Asset_Name]` Whitelist)
@@ -48,13 +48,15 @@ Analyze the input raw article/script text and convert it into a multi-part JSON 
 
 DOCUMENTARY ARCHITECTURE RULES:
 1. **100% Verbatim Coverage**: Faithfully cover and split the entire input raw article text into sequential beats with verbatim "narration" text. NO OMISSION, NO WORD ALTERATION.
-2. **Closed-World Asset Lockdown**: Anchor EVERY character or prop reference using exact `[Asset_Name]` brackets from the provided Asset Library. Do NOT invent new bracketed tags.
-3. **Visual Prompt Quality**: Every Shot "keyframe_prompt" MUST be 120-220 words in English describing raw physical static scene, subject pose, 3-layer composition, and exact [Asset_Name] tags.
-4. **Cinematic 6s Motion**: Every Shot "motion" MUST describe a 6-second cinematic video prompt with controlled camera move (push_in, pull_out, pan, tilt, parallax, static) and era-appropriate ambient particles (floating dust, drifting embers, cold snow motes).
-5. **Shot Duration**: Every Shot duration `dur` MUST be >= 5 seconds (e.g. 5s, 6s, 7s).
+2. **Beat Narration Duration (10-20 Seconds)**: Every Beat "narration" MUST contain 25-50 words (10-20 seconds of voiceover).
+3. **Closed-World Asset Lockdown**: Anchor EVERY character or prop reference using exact `[Asset_Name]` brackets from the provided Asset Library. Do NOT invent new bracketed tags.
+4. **Visual Prompt Quality**: Every Shot "keyframe_prompt" MUST be 120-220 words in English describing raw physical static scene, subject pose, 3-layer composition, and exact [Asset_Name] tags.
+5. **Cinematic 6s Motion**: Every Shot "motion" MUST describe a 6-second cinematic video prompt with controlled camera move (push_in, pull_out, pan, tilt, parallax, static) and era-appropriate ambient particles (floating dust, drifting embers, cold snow motes).
+6. **Shot Duration**: Every Shot duration `dur` MUST be >= 5 seconds (e.g. 5s, 6s, 7s). Each Beat should contain 2 to 4 Shots.
+7. **Part Target Word Count**: Calculate "totalParts" assuming each Part covers approx 150-200 words of verbatim script text (~3 to 5 Beats per Part) to keep response JSON within safe token limits.
 
 STRICT BEAT & SHOT JSON STRUCTURE:
-- Every Beat in "beats" MUST contain: "title", "bg", "feel", "narration", "shots" (Array of Shots).
+- Every Beat in "beats" MUST contain: "title", "bg", "feel", "narration", "shots" (Array of 2-4 Shots).
 - Each Shot inside "shots" MUST contain: "dur" (number >= 5), "is_title" (boolean), "camera_move", "scene", "motion" (6s cinematic animation prompt), "keyframe_prompt" (120-220 words with [Asset_Name]).
 
 YOU MUST RESPOND ONLY WITH VALID JSON MATCHING THIS EXACT FORMAT:
